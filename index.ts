@@ -23,10 +23,14 @@ const server = new Server(
   },
 );
 
-const args = process.argv.slice(2);
+let args = process.argv.slice(2);
 if (args.length === 0) {
-  console.error("Please provide a database URL as a command-line argument");
-  process.exit(1);
+  if (process.env.DATABASE_URL) {
+    args = [process.env.DATABASE_URL];
+  } else {
+    console.error("Please provide a database URL as a command-line argument or set the DATABASE_URL environment variable.");
+    process.exit(1);
+  }
 }
 
 const databaseUrl = args[0];
